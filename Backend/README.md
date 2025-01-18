@@ -175,3 +175,82 @@ curl -X POST http://localhost:3000/users/login \
   "password": "password123"
 }'
 ```
+
+# User Profile Endpoint
+
+## GET /users/profile
+
+### Description
+
+This endpoint is used to get the profile of the authenticated user. It requires a valid authentication token.
+
+### Responses
+
+#### Success
+
+- **Status Code**: `200 OK`
+- **Response Body**: A JSON object containing the user details.
+  ```json
+  {
+    "_id": "user-id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+  ```
+
+#### Authentication Errors
+
+- **Status Code**: `401 Unauthorized`
+- **Response Body**: A JSON object containing an error message.
+  ```json
+  {
+    "message": "Authentication required"
+  }
+  ```
+
+### Example Request
+
+```bash
+curl -X GET http://localhost:3000/users/profile \
+-H "Authorization: Bearer your-auth-token"
+```
+
+# User Logout Endpoint
+
+## GET /users/logout
+
+### Description
+
+This endpoint is used to log out the authenticated user. It requires a valid authentication token.
+
+### Responses
+
+#### Success
+
+- **Status Code**: `200 OK`
+- **Response Body**: A JSON object containing a success message.
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+
+#### Authentication Errors
+
+- **Status Code**: `401 Unauthorized`
+- **Response Body**: A JSON object containing an error message.
+  ```json
+  {
+    "message": "Authentication required"
+  }
+  ```
+
+### Example Request
+
+```bash
+curl -X GET http://localhost:3000/users/logout \
+-H "Authorization: Bearer your-auth-token"
+```

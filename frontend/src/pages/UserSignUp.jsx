@@ -1,28 +1,45 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
 
 const UserSignUp = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
   const [userData, setuserData] = useState({});
+  const { user, setUser } = useContext(UserDataContext);
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    setuserData({
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
+    const newUser = {
+      fullname: {
+        firstname: firstname,
+        lastname: lastname,
       },
       email: email,
       password: password,
-    });
+    };
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/register`,
+      newUser
+    );
+
+    if (response.status === 201) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    }
 
     // Clear the input fields
-    setfirstName("");
-    setlastName("");
+    setfirstname("");
+    setlastname("");
     setemail("");
     setpassword("");
   };
@@ -41,16 +58,16 @@ const UserSignUp = () => {
             <input
               className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
-              value={firstName}
-              onChange={(e) => setfirstName(e.target.value)}
+              value={firstname}
+              onChange={(e) => setfirstname(e.target.value)}
               type="text"
               placeholder="first name"
             />
             <input
               className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
-              value={lastName}
-              onChange={(e) => setlastName(e.target.value)}
+              value={lastname}
+              onChange={(e) => setlastname(e.target.value)}
               type="text"
               placeholder="last name"
             />
@@ -76,7 +93,7 @@ const UserSignUp = () => {
           />
 
           <button className="px-4 py-2 w-full border text-lg rounded placeholder:text-base mb-3 bg-black text-white font-semibold">
-            Sign up
+            Create Account
           </button>
 
           <p className="text-center mb-4">

@@ -6,7 +6,6 @@ import axios from "axios";
 const UserLogin = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [userData, setuserData] = useState({});
 
   const { user, setUser } = useContext(UserDataContext);
 

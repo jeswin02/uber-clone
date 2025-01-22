@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CaptainDetails from "../components/CaptainDetails";
+import RidePopUp from "../components/RidePopUp";
 
 const CaptainHome = () => {
   return (
@@ -10,7 +12,7 @@ const CaptainHome = () => {
           src="https://brandeps.com/logo-download/U/Uber-logo-02.png"
         />
         <Link
-          to="/home"
+          to="/captain-home"
           className=" h-10 w-10 bg-white flex items-center justify-center rounded-full"
         >
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
@@ -25,36 +27,12 @@ const CaptainHome = () => {
         />
       </div>
 
-      <div className="h1/2 p-4">
-        <div>
-          <div>
-            <img src="" alt="" />
-            <h4>Jeswin Mathew</h4>
-          </div>
+      <div className="h-2/5 p-6">
+        <CaptainDetails />
+      </div>
 
-          <div>
-            <h4>Rs. 200.02</h4>
-            <p>Earned</p>
-          </div>
-
-          <div>
-            <div className="text-center ">
-              <i className="text-2xl font-thin ri-time-line"></i>
-              <h5 className="text-lg font-medium">10.2</h5>
-              <p className="text-sm text-gray-600">Hours Online</p>
-            </div>
-            <div className="text-center ">
-              <i className="text-2xl font-thin ri-speed-up-line"></i>
-              <h5 className="text-lg font-medium">10.2</h5>
-              <p className="text-sm text-gray-600">Hours Online</p>
-            </div>
-            <div className="text-center ">
-              <i className="text-2xl font-thin ri-booklet-line"></i>
-              <h5 className="text-lg font-medium">10.2</h5>
-              <p className="text-sm text-gray-600">Hours Online</p>
-            </div>
-          </div>
-        </div>
+      <div className="fixed w-full z-10 bottom-0 bg-white py-6 px-3 pt-12">
+        <RidePopUp />
       </div>
     </div>
   );

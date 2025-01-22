@@ -4,6 +4,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel";
+import ConfirmRide from "../components/ConfirmRide";
 
 const Home = () => {
   const [pickup, setpickup] = useState("");
@@ -12,6 +14,11 @@ const Home = () => {
   const panelRef = useRef(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const panelCloseRef = useRef(null);
+  const [vehiclePanelOpen, setvehiclePanelOpen] = useState(false);
+  const vehiclePanelRef = useRef(null);
+  const confirmPanelRef = useRef(null);
+  const [confirmRidePanel, setconfirmRidePanel] = useState(false);
+
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -40,6 +47,30 @@ const Home = () => {
     },
     [panelOpen]
   );
+
+  useGSAP(() => {
+    if (vehiclePanelOpen) {
+      gsap.to(vehiclePanelRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(vehiclePanelRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [vehiclePanelOpen]);
+
+  useGSAP(() => {
+    if (confirmRidePanel) {
+      gsap.to(confirmPanelRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(confirmPanelRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [confirmRidePanel]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -90,29 +121,28 @@ const Home = () => {
         </div>
         <div ref={panelRef} className=" bg-white h-0">
           {" "}
-          <LocationSearchPanel />
+          <LocationSearchPanel
+            setPanelOpen={setPanelOpen}
+            setvehiclePanelOpen={setvehiclePanelOpen}
+          />
         </div>
       </div>
 
-      <div className="fixed w-full z-10 bottom-0 bg-white py-6 px-4">
-        <h4 className="text-2xl font-semibold mb-3">Ride Options</h4>
-        <div className="flex w-full border-black mb-2 rounded-xl border-2 items-center justify-between ">
-          <img
-            className="h-10"
-            src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1682350114/assets/c2/296eac-574a-4a81-a787-8a0387970755/original/UberBlackXL.png"
-          />
-          <div className=" p-3 w-1/2">
-            <h4 className="font-medium text-base">
-              UberGo{" "}
-              <span>
-                <i className="ri-user-3-fill"></i> 4
-              </span>{" "}
-            </h4>
-            <h5 className="font-medium text-sm">2 mins away</h5>
-            <p className="font-normal text-xs">Affordable, compact rides</p>
-          </div>
-          <h2 className="text-2xl font-semibold">Rs. 193.20</h2>
-        </div>
+      <div
+        ref={vehiclePanelRef}
+        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-8 px-4"
+      >
+        <VehiclePanel
+          setvehiclePanelOpen={setvehiclePanelOpen}
+          setconfirmRidePanel={setconfirmRidePanel}
+        />
+      </div>
+
+      <div
+        ref={confirmPanelRef}
+        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-8 px-4"
+      >
+        <ConfirmRide setconfirmRidePanel={setconfirmRidePanel} />
       </div>
     </div>
   );

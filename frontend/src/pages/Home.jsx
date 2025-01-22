@@ -6,6 +6,8 @@ import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
+import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 const Home = () => {
   const [pickup, setpickup] = useState("");
@@ -14,10 +16,14 @@ const Home = () => {
   const panelRef = useRef(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const panelCloseRef = useRef(null);
+  const vehicleFoundRef = useRef(null);
   const [vehiclePanelOpen, setvehiclePanelOpen] = useState(false);
   const vehiclePanelRef = useRef(null);
   const confirmPanelRef = useRef(null);
+  const waitingForDriverRef = useRef(null);
   const [confirmRidePanel, setconfirmRidePanel] = useState(false);
+  const [vehicleFound, setvehicleFound] = useState(false);
+  const [waitingForDriver, setwaitingForDriver] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -72,6 +78,30 @@ const Home = () => {
     }
   }, [confirmRidePanel]);
 
+  useGSAP(() => {
+    if (vehicleFound) {
+      gsap.to(vehicleFoundRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(vehicleFoundRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [vehicleFound]);
+
+  useGSAP(() => {
+    if (waitingForDriver) {
+      gsap.to(waitingForDriverRef.current, {
+        transform: "translateY(0)",
+      });
+    } else {
+      gsap.to(waitingForDriverRef.current, {
+        transform: "translateY(100%)",
+      });
+    }
+  }, [waitingForDriver]);
+
   return (
     <div className="h-screen relative overflow-hidden">
       <img
@@ -83,7 +113,7 @@ const Home = () => {
         {/* Image for temporary use */}
         <img
           className="w-full h-full object-cover"
-          src="https://images.squarespace-cdn.com/content/v1/54ff63f0e4b0bafce6932642/1613584820445-6MHFT7HI6MHUED46VYU4/Two+Maps+-+Color.png"
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt=""
         />
       </div>
@@ -130,7 +160,7 @@ const Home = () => {
 
       <div
         ref={vehiclePanelRef}
-        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-8 px-4"
+        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-6 px-3 pt-12"
       >
         <VehiclePanel
           setvehiclePanelOpen={setvehiclePanelOpen}
@@ -140,9 +170,26 @@ const Home = () => {
 
       <div
         ref={confirmPanelRef}
-        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-8 px-4"
+        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-6 px-3 pt-12"
       >
-        <ConfirmRide setconfirmRidePanel={setconfirmRidePanel} />
+        <ConfirmRide
+          setconfirmRidePanel={setconfirmRidePanel}
+          setvehicleFound={setvehicleFound}
+        />
+      </div>
+
+      <div
+        ref={vehicleFoundRef}
+        className="fixed translate-y-full w-full z-10 bottom-0 bg-white py-6 px-3 pt-12"
+      >
+        <LookingForDriver setvehicleFound={setvehicleFound} />
+      </div>
+
+      <div
+        ref={waitingForDriverRef}
+        className="fixed  w-full z-10 bottom-0 bg-white py-6 px-3 pt-12"
+      >
+        <WaitingForDriver waitingForDriver={waitingForDriver} />
       </div>
     </div>
   );

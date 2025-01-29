@@ -1,5 +1,6 @@
 const rideModel = require("../models/ride.model");
 const mapService = require("./maps.service");
+const crypto = require("crypto");
 
 async function getFare(pickup, destination) {
   if (!pickup || !destination) {
@@ -49,7 +50,6 @@ async function getFare(pickup, destination) {
 
 module.exports.getFare = getFare;
 
-//TO-DO
 function getOtp(num) {
   function generateOtp(num) {
     const otp = crypto

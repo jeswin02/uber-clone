@@ -1,4 +1,4 @@
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserDataContext } from "../context/UserContext";
@@ -8,7 +8,7 @@ const UserSignUp = () => {
   const [password, setpassword] = useState("");
   const [firstname, setfirstname] = useState("");
   const [lastname, setlastname] = useState("");
-  const {  setUser } = useContext(UserDataContext);
+  const { setUser } = useContext(UserDataContext);
 
   const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ const UserSignUp = () => {
           <h3 className="text-lg font-medium mb-2">What's your name</h3>
           <div className="flex gap-3">
             <input
-              className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
+              className="bg-gray-200 px-4 py-2  border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
               value={firstname}
               onChange={(e) => setfirstname(e.target.value)}
@@ -63,7 +63,7 @@ const UserSignUp = () => {
               placeholder="first name"
             />
             <input
-              className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
+              className="bg-gray-200 px-4 py-2  border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
               value={lastname}
               onChange={(e) => setlastname(e.target.value)}

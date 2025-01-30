@@ -1,37 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { CaptainDataContext } from "../context/CaptainContext";
+import { CaptainDataContext } from "../context/CapatainContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CaptainSignup = () => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
-  const [firstname, setfirstname] = useState("");
-  const [lastname, setlastname] = useState("");
-  const {  setCaptain } = useContext(CaptainDataContext);
-
-  const [vehicleCapacity, setvehicleCapacity] = useState("");
-  const [vehiclePlate, setvehiclePlate] = useState("");
-  const [vehicleColor, setvehicleColor] = useState("");
-  const [vehicleType, setvehicleType] = useState("");
-
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [vehicleCapacity, setVehicleCapacity] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+
+  const { captain, setCaptain } = React.useContext(CaptainDataContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     const captainData = {
       fullname: {
-        firstname: firstname,
-        lastname: lastname,
+        firstname: firstName,
+        lastname: lastName,
       },
       email: email,
       password: password,
       vehicle: {
-        capacity: vehicleCapacity,
-        plate: vehiclePlate,
         color: vehicleColor,
+        plate: vehiclePlate,
+        capacity: vehicleCapacity,
         vehicleType: vehicleType,
       },
     };
@@ -43,131 +43,155 @@ const CaptainSignup = () => {
 
     if (response.status === 201) {
       const data = response.data;
+      console.log("🚀  data:", data);
       setCaptain(data.captain);
       localStorage.setItem("token", data.token);
       navigate("/captain-home");
     }
 
-    // Clear the input fields
-    setfirstname("");
-    setlastname("");
-    setemail("");
-    setpassword("");
-    setvehicleCapacity("");
-    setvehiclePlate("");
-    setvehicleType("");
-    setvehicleColor("");
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setVehicleColor("");
+    setVehiclePlate("");
+    setVehicleCapacity("");
+    setVehicleType("");
   };
-
   return (
-    <div className="p-5 flex flex-col justify-between h-screen">
+    <div className="py-5 px-5 h-screen flex flex-col justify-between">
       <div>
         <img
-          className="w-16 mb-10"
+          className="w-20 mb-3"
           src="https://www.svgrepo.com/show/505031/uber-driver.svg"
-          alt="uber-logo"
+          alt=""
         />
-        <form onSubmit={(e) => submitHandler(e)}>
-          <h3 className="text-lg font-medium mb-2">Captain's name</h3>
-          <div className="flex gap-3">
+
+        <form
+          onSubmit={(e) => {
+            submitHandler(e);
+          }}
+        >
+          <h3 className="text-lg w-full  font-medium mb-2">
+            What's our Captain's name
+          </h3>
+          <div className="flex gap-4 mb-7">
             <input
-              className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
-              value={firstname}
-              onChange={(e) => setfirstname(e.target.value)}
+              className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
               type="text"
-              placeholder="first name"
+              placeholder="First name"
+              value={firstName}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
             />
             <input
-              className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6 w-1/2"
               required
-              value={lastname}
-              onChange={(e) => setlastname(e.target.value)}
+              className="bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
               type="text"
-              placeholder="last name"
+              placeholder="Last name"
+              value={lastName}
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
             />
           </div>
 
-          <h3 className="text-lg font-medium mb-2">What's your email</h3>
+          <h3 className="text-lg font-medium mb-2">
+            What's our Captain's email
+          </h3>
           <input
-            className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6"
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
             required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
             type="email"
             placeholder="email@example.com"
           />
+
           <h3 className="text-lg font-medium mb-2">Enter Password</h3>
+
           <input
-            className="bg-gray-200 px-4 py-2 w-full border text-base rounded placeholder:text-sm mb-6"
-            required
+            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
             value={password}
-            onChange={(e) => setpassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            required
             type="password"
             placeholder="password"
           />
 
-          <h3 className="text-lg font-medium mb-2">Vehicle Details</h3>
-          <div className="flex gap-4">
+          <h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
+          <div className="flex gap-4 mb-7">
             <input
-              className="bg-gray-200 px-4 py-2 w-1/2 border text-base rounded placeholder:text-sm mb-6 "
               required
-              value={vehicleCapacity}
-              onChange={(e) => setvehicleCapacity(e.target.value)}
-              type="text"
-              placeholder="Vehicle Capacity"
-            />
-            <input
-              className="bg-gray-200 px-4 py-2 w-1/2 border text-base rounded placeholder:text-sm mb-6"
-              required
-              value={vehiclePlate}
-              onChange={(e) => setvehiclePlate(e.target.value)}
-              type="text"
-              placeholder="Vehicle Plate"
-            />
-          </div>
-          <div className="flex gap-4">
-            <input
-              className="bg-gray-200 px-4 py-2 w-1/2 border text-base rounded placeholder:text-sm mb-6"
-              required
-              value={vehicleColor}
-              onChange={(e) => setvehicleColor(e.target.value)}
+              className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
               type="text"
               placeholder="Vehicle Color"
+              value={vehicleColor}
+              onChange={(e) => {
+                setVehicleColor(e.target.value);
+              }}
+            />
+            <input
+              required
+              className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              placeholder="Vehicle Plate"
+              value={vehiclePlate}
+              onChange={(e) => {
+                setVehiclePlate(e.target.value);
+              }}
+            />
+          </div>
+          <div className="flex gap-4 mb-7">
+            <input
+              required
+              className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="number"
+              placeholder="Vehicle Capacity"
+              value={vehicleCapacity}
+              onChange={(e) => {
+                setVehicleCapacity(e.target.value);
+              }}
             />
             <select
               required
+              className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
               value={vehicleType}
-              onChange={(e) => setvehicleType(e.target.value)}
-              className="bg-gray-200 px-4 py-2 w-1/2 border text-base rounded placeholder:text-sm mb-6 "
+              onChange={(e) => {
+                setVehicleType(e.target.value);
+              }}
             >
               <option value="" disabled>
                 Select Vehicle Type
               </option>
               <option value="car">Car</option>
-              <option value="moto">Moto</option>
               <option value="auto">Auto</option>
+              <option value="moto">Moto</option>
             </select>
           </div>
-          <button className="px-4 py-2 w-full border text-base rounded placeholder:text-base mb-3 bg-black text-white font-semibold">
+
+          <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
             Create Captain Account
           </button>
-
-          <p className="text-center mb-4">
-            Already have an account?{" "}
-            <Link to="/captain-login" className="text-blue-600">
-              Log in
-            </Link>
-          </p>
         </form>
+        <p className="text-center">
+          Already have a account?{" "}
+          <Link to="/captain-login" className="text-blue-600">
+            Login here
+          </Link>
+        </p>
       </div>
-
       <div>
-        {" "}
-        <p className="text-left text-xs text-gray-500 leading-tight">
-          By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
-          including by automated means, from Uber and its affiliates to the
-          number provided.
+        <p className="text-[10px] mt-6 leading-tight">
+          This site is protected by reCAPTCHA and the{" "}
+          <span className="underline">Google Privacy Policy</span> and{" "}
+          <span className="underline">Terms of Service apply</span>.
         </p>
       </div>
     </div>

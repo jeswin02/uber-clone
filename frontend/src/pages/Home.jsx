@@ -39,7 +39,6 @@ const Home = () => {
 
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
-  console.log("🚀  user:", user);
 
   useEffect(() => {
     socket.emit("join", { userType: "user", userId: user._id });
@@ -223,7 +222,6 @@ const Home = () => {
         alt=""
       />
       <div className="h-screen w-screen">
-        {/* image for temporary use  */}
         <LiveTracking />
       </div>
       <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
@@ -290,55 +288,64 @@ const Home = () => {
           />
         </div>
       </div>
-      <div
-        ref={vehiclePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
-      >
-        <VehiclePanel
-          selectVehicle={setVehicleType}
-          fare={fare}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehiclePanel={setVehiclePanel}
-        />
-      </div>
-      <div
-        ref={confirmRidePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
-      >
-        <ConfirmRide
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehicleFound={setVehicleFound}
-        />
-      </div>
-      <div
-        ref={vehicleFoundRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
-      >
-        <LookingForDriver
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setVehicleFound={setVehicleFound}
-        />
-      </div>
-      <div
-        ref={waitingForDriverRef}
-        className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12"
-      >
-        <WaitingForDriver
-          ride={ride}
-          setVehicleFound={setVehicleFound}
-          setWaitingForDriver={setWaitingForDriver}
-          waitingForDriver={waitingForDriver}
-        />
-      </div>
+      {vehiclePanel && (
+        <div
+          ref={vehiclePanelRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
+        >
+          <VehiclePanel
+            selectVehicle={setVehicleType}
+            fare={fare}
+            setConfirmRidePanel={setConfirmRidePanel}
+            setVehiclePanel={setVehiclePanel}
+          />
+        </div>
+      )}
+      {confirmRidePanel && (
+        <div
+          ref={confirmRidePanelRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        >
+          <ConfirmRide
+            createRide={createRide}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setConfirmRidePanel={setConfirmRidePanel}
+            setVehicleFound={setVehicleFound}
+            setVehiclePanel={setVehiclePanel}
+          />
+        </div>
+      )}
+      {vehicleFound && (
+        <div
+          ref={vehicleFoundRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        >
+          <LookingForDriver
+            createRide={createRide}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setVehicleFound={setVehicleFound}
+          />
+        </div>
+      )}
+      {waitingForDriver && (
+        <div
+          ref={waitingForDriverRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        >
+          <WaitingForDriver
+            ride={ride}
+            setVehicleFound={setVehicleFound}
+            setWaitingForDriver={setWaitingForDriver}
+            waitingForDriver={waitingForDriver}
+          />
+        </div>
+      )}
     </div>
   );
 };
